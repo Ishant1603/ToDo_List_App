@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <h1>Todo List</h1>
+
+    <section>
+        <h2>Add a new todo item:</h2>
+        <form action="{{ url_for('add') }}" method="POST">
+            <input type="text" name="todoitem" required>
+            <input type="submit" value="Add Item" class="button">
+        </form>
+    </section>
+
+    <section>
+        <h2>Incomplete Items</h2>
+        {% if incomplete %}
+        <ul>
+            {% for todo in incomplete %}
+            <li class="incomplete-item large-text">{{ todo.text }} <a href="{{ url_for('complete', id=todo.id) }}">Mark As Complete</a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No incomplete items.</p>
+        {% endif %}
+
+        <h2>Completed Items</h2>
+        {% if complete %}
+        <ul>
+            {% for todo in complete %}
+            <li class="complete-item large-text">{{ todo.text }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No completed items yet.</p>
+        {% endif %}
+    </section>
+</body>
+</html>
