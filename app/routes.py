@@ -5,27 +5,52 @@ from app import db
 
 
 @app.route('/')
-def index():
-    incomplete = Todo.query.filter_by(complete=False).all()
-    complete = Todo.query.filter_by(complete=True).all()
+def home():
+    query = request.args.get('query')
+    if query:
+        allTodo = Todo.query.filter(
+            (Todo.title.ilike(f"%{query}%")) | (Todo.desc.ilike(f"%{query}%"))
+        ).all()
+    else:
+        allTodo = Todo.query.all()
+    return render_template('index.html', allTodo=allTodo)
 
-    return render_template('index.html', incomplete=incomplete, complete=complete)
 
-
-@app.route('/add', methods=['POST'])
+@app.route('/add',methods=['GET','POST'])
 def add():
-    todo = Todo(text=request.form['todoitem'], complete=False)
-    db.session.add(todo)
+    if request.method=='POST':
+        title = request.form['title']
+        desc = request.form['desc']
+        todo = Todo(title = title,desc = desc)
+        db.session.add(todo)
+        db.session.commit()
+        return redirect('/')
+    allTodo = Todo.query.all()
+    return render_template('add.html',allTodo=allTodo)
+
+@app.route('/delete/<int:SNo>')
+def delete(SNo):
+    todo = Todo.query.filter_by(SNo=SNo).first()
+    db.session.delete(todo)
     db.session.commit()
+    return redirect('/') 
 
-    return redirect(url_for('index'))
+@app.route('/update/<int:SNo>',methods=['GET','POST'])
+def update(SNo):
+    if request.method=="POST":
+        title = request.form['title']
+        desc = request.form['desc']
+        todo = Todo.query.filter_by(SNo=SNo).first()
+        todo.tittle = title
+        todo.desc = desc  
+        db.session.add(todo)
+        db.session.commit()
+        return redirect('/')
 
 
-@app.route('/complete/<id>')
-def complete(id):
+    todo = Todo.query.filter_by(SNo=SNo).first()
+    return render_template('update.html',todo=todo)
 
-    todo = Todo.query.filter_by(id=int(id)).first()
-    todo.complete = True
-    db.session.commit()
-
-    return redirect(url_for('index'))
+@app.route('/about')
+def about():
+    return render_template('about.html')

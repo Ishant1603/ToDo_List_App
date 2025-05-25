@@ -1,9 +1,10 @@
 from app import db
-
+from datetime import datetime
 class Todo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(200), nullable=False)  # optional but good to require text
-    complete = db.Column(db.Boolean, default=False)  # set a default for convenience
+    SNo = db.Column(db.Integer , primary_key = True)
+    title = db.Column(db.String(200),nullable = False)
+    desc = db.Column(db.String(500),nullable = False)
+    Date_created = db.Column(db.DateTime,default = datetime.utcnow)
 
-    def __repr__(self):
-        return f"<Todo {self.text}>"
+    def __repr__(self) -> str :
+        return f"{self.SNo} - {self.title}"
