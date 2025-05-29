@@ -46,6 +46,6 @@ def email_notification_worker():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-        print("[INFO] Starting background email worker...")
+       # print("[INFO] Starting background email worker...")
         threading.Thread(target=email_notification_worker, daemon=True).start()
         app.run(debug=True)
