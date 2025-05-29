@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock title %} 
+{% block body %}
+<div class="container mt-4">
+  {% for todo in allTodo %}
+    <div class="card mb-3 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <h5 class="card-title">{{ loop.index }}. {{ todo.title }}</h5>
+          <small class="text-muted text-end">
+            {% if todo.planned_date %}
+              <strong>Date:</strong> {{ todo.planned_date }}<br>
+            {% endif %}
+            {% if todo.planned_time %}
+              <strong>Planned Time:</strong> {{ todo.planned_time.strftime('%H:%M') }}<br>
+            {% endif %}
+            {% if todo.completed_at %}
+              <strong>Completed At:</strong> {{ todo.completed_at.strftime('%Y-%m-%d %H:%M') }}
+            {% endif %}
+          </small>
+        </div>
+        <p class="card-text">{{ todo.desc }}</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="ms-auto">
+            <div>
+              <a href="/Delete/{{ todo.CompleteId }}" class="btn btn-outline-danger btn-sm">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
+{% endblock body %} 

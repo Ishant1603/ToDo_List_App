@@ -2,10 +2,10 @@
  {% extends 'base.html' %}
  {% block title %}Add{% endblock title %}  
  {% block body %}
-    <div class="container mt-5">
+  <div class="container mt-5">
   <div class="card shadow p-4" style="max-width: 600px; margin: auto;">
     <h2 class="text-center mb-4">Add a new Todo</h2>
-    <form  method="POST">
+    <form method="POST">
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -13,21 +13,49 @@
           class="form-control"
           name="title"
           id="title"
+          required
         />
       </div>
+
       <div class="mb-3">
         <label for="desc" class="form-label">Description</label>
-        <input
-          type="text"
+        <textarea
           class="form-control"
           name="desc"
           id="desc"
+          rows="4"
+          style="resize: vertical;"
+          required
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="planned_date" class="form-label">Date</label>
+        <input
+          type="date"
+          class="form-control"
+          name="planned_date"
+          id="planned_date"
+          required
         />
       </div>
-      <!-- <a href="/" class="btn btn-primary w-100">Submit</a> -->
-       <button type="submit" class="btn btn-dark w-100">Submit</button>
+
+      <div class="mb-3">
+        <label for="planned_time" class="form-label">Time</label>
+        <input
+          type="time"
+          class="form-control"
+          name="planned_time"
+          id="planned_time"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-dark w-100">Submit</button>
     </form>
   </div>
 </div>
+
+
  {% endblock body %} 
   

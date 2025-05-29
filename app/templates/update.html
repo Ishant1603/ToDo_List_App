@@ -5,7 +5,8 @@
     <div class="container mt-5">
   <div class="card shadow p-4" style="max-width: 600px; margin: auto;">
     <h2 class="text-center mb-4">Update a Todo</h2>
-    <form action="/update/{{todo.SNo}}" method="POST">
+    <form action="/update/{{ todo.SNo }}" method="POST">
+      
       <div class="mb-3">
         <label for="title" class="form-label">Todo Title</label>
         <input
@@ -13,21 +14,48 @@
           class="form-control"
           name="title"
           id="title"
-          value ="{{todo.title}}"
+          value="{{ todo.title }}"
+          required
         />
       </div>
+
       <div class="mb-3">
         <label for="desc" class="form-label">Todo Description</label>
-        <input
-          type="text"
+        <textarea
           class="form-control"
           name="desc"
           id="desc"
-          value="{{todo.desc}}"
+          rows="4"
+          style="resize: vertical;"
+          required
+        >{{ todo.desc }}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="planned_date" class="form-label">Planned Date</label>
+        <input
+          type="date"
+          class="form-control"
+          name="planned_date"
+          id="planned_date"
+          value="{{ todo.planned_date.strftime('%Y-%m-%d') if todo.planned_date }}"
+          required
         />
       </div>
-      <!-- <a href="/" class="btn btn-primary w-100">Submit</a> -->
-       <button type="submit" class="btn btn-dark w-100">Update</button>
+
+      <div class="mb-3">
+        <label for="planned_time" class="form-label">Planned Time</label>
+        <input
+          type="time"
+          class="form-control"
+          name="planned_time"
+          id="planned_time"
+          value="{{ todo.planned_time.strftime('%H:%M') if todo.planned_time }}"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-dark w-100">Update</button>
     </form>
   </div>
 </div>

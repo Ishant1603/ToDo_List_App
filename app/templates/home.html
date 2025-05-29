@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyTodo App - Home</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #c3dafe, #a3bffa);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+    h1 {
+      color: #4c51bf;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #555;
+      margin-bottom: 30px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .btn-login {
+      background-color: #4c51bf;
+      color: white;
+    }
+    .btn-register {
+      background-color: white;
+      color: #4c51bf;
+      border: 2px solid #4c51bf;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Todo App</h1>
+    <p>Keep track of your daily tasks with ease.</p>
+    <a href="/login"><button class="btn btn-login">Login</button></a>
+    <a href="/register"><button class="btn btn-register">Register</button></a>
+  </div>
+</body>
+</html>

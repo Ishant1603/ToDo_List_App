@@ -1,10 +1,33 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from flask_bcrypt import Bcrypt
+from flask_mail import Mail
+from dotenv import load_dotenv
+import os
+
+load_dotenv(dotenv_path='Password.env')
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///todo.db" 
+
+# Basic Config
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///main.db"
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+# Mail Config
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 
-from app import routes
+# Extensions
+db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+mail = Mail(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+from app import routes  # Important to avoid circular imports
