@@ -19,7 +19,7 @@ def email_notification_worker():
             for todo in todos:
                 if todo.planned_date and todo.planned_time:
                     planned_dt = india_tz.localize(datetime.combine(todo.planned_date, todo.planned_time))
-                    reminder_dt = planned_dt - timedelta(minutes=1)
+                    reminder_dt = planned_dt - timedelta(minutes=5)
                     delta = (reminder_dt - now).total_seconds()
                     if 0 <= delta <= 60:
                         user = User.query.filter_by(id=todo.user_id).first()
@@ -41,7 +41,7 @@ def email_notification_worker():
                             except Exception as e:
                                 print(f"[ERROR] Email failed: {e}")
                                 traceback.print_exc()
-            time.sleep(10)
+            time.sleep(30)
 
 if __name__ == "__main__":
     with app.app_context():

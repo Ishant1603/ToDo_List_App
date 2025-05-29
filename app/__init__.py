@@ -11,7 +11,7 @@ load_dotenv(dotenv_path='Password.env')
 app = Flask(__name__)
 
 # Basic Config
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///main.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
