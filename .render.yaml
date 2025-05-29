@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: MyTodo
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python run.py"
+    envVars:
+      - key: SECRET_KEY
+        value: thisisasecretkey
+      - key: MAIL_USERNAME
+        value: toko2dot@gmail.com
+      - key: MAIL_PASSWORD
+        value: xgdu wkkv hadu frkl
+      - key: SQLALCHEMY_DATABASE_URI
+        value: postgresql://maindatabase_63vi_user:NutLVIW485vpwbM7iZRO4E0mqZyjVBbJ@dpg-d0rljrmmcj7s738dbnk0-a.oregon-postgres.render.com/maindatabase_63vi
+      - key: RENDER
+        value: "TRUE"
