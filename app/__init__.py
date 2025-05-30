@@ -6,7 +6,11 @@ from flask_mail import Mail
 from dotenv import load_dotenv
 import os
 
-load_dotenv(dotenv_path='Password.env')
+if os.environ.get("FLASK_ENV") != "production":
+    from dotenv import load_dotenv
+    load_dotenv(dotenv_path="Password.env")
+
+
 print("DB URI:", os.getenv('SQLALCHEMY_DATABASE_URI'))
 print("Secret Key:", os.getenv('SECRET_KEY'))
 
