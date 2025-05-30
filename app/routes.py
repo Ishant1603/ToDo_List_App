@@ -18,6 +18,16 @@ def register():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
+        repeat_password = request.form['repeat_password']
+        
+        if password != repeat_password:
+            flash("Passwords do not match!", "danger")
+            return redirect(url_for('register'))
+        
+        existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
+        if existing_user:
+            flash("Username or Email already exists!", "danger")  # "danger" for Bootstrap styling
+            return redirect(url_for('register'))
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         new_user = User(username=username, email=email, password=hashed_password)
         db.session.add(new_user)
@@ -36,6 +46,33 @@ def login():
             return redirect(url_for('dashboard'))
         flash('Invalid credentials', 'danger')
     return render_template('login.html')
+
+@app.route('/forgot', methods=['GET', 'POST'])
+def forgot():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        new_password = request.form.get('new_password')
+        repeat_password = request.form.get('repeat_password')
+
+        if new_password != repeat_password:
+            flash("Passwords do not match!", "danger")
+            return render_template('forgot_password.html')
+
+        user = User.query.filter_by(username=username).first()
+        if user:
+            hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+            user.password = hashed_password
+            db.session.commit()
+            flash("Password updated successfully!", "success")
+            return redirect(url_for('login'))
+        else:
+            flash("Username not found!", "danger")
+            return render_template('forgot_password.html')
+
+    return render_template('forgot_password.html')
+
+
+
 
 @app.route('/logout')
 @login_required
