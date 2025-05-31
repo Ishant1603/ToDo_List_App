@@ -3,7 +3,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from datetime import datetime
 from app import app, db, bcrypt, login_manager
 from app.models import User, Todo, CompletedTodo
-
+from sqlalchemy import or_
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -81,11 +81,32 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    allTodo = Todo.query.filter_by(user_id=current_user.id).all()
-    return render_template('index.html', allTodo=allTodo)
+    query = request.args.get("query", "").strip()
+
+    if query:
+        # Filter only the current user’s todos that match title OR description
+        allTodo = (
+            Todo.query
+            .filter_by(user_id=current_user.id)
+            .filter(
+                or_(
+                    Todo.title.ilike(f"%{query}%"),
+                    Todo.desc.ilike(f"%{query}%")
+                )
+            )
+            .all()
+        )
+    else:
+        # No search term → show everything for this user
+        allTodo = Todo.query.filter_by(user_id=current_user.id).all()
+
+    return render_template("index.html", allTodo=allTodo, search_query=query)
+
 
 @app.route('/add', methods=['GET', 'POST'])
 @login_required
