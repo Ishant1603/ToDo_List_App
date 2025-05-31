@@ -177,13 +177,13 @@ def Delete(CompleteId):
 
 
 
-@app.route('/drop_old_fk', methods=['GET'])
-def drop_old_foreign_key():
-    try:
-        db.session.execute(text("""
-            ALTER TABLE completed_todos DROP CONSTRAINT IF EXISTS completed_todos_sno_fkey;
-        """))
-        db.session.commit()
-        return jsonify({"status": "success", "message": "Foreign key constraint dropped."})
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)})
+# @app.route('/drop_old_fk', methods=['GET'])
+# def drop_old_foreign_key():
+#     try:
+#         db.session.execute(text("""
+#             ALTER TABLE completed_todos DROP CONSTRAINT IF EXISTS completed_todos_sno_fkey;
+#         """))
+#         db.session.commit()
+#         return jsonify({"status": "success", "message": "Foreign key constraint dropped."})
+#     except Exception as e:
+#         return jsonify({"status": "error", "message": str(e)})
