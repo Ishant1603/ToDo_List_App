@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):
 class CompletedTodo(db.Model):
     __tablename__ = 'completed_todos'
     CompleteId = db.Column(db.Integer, primary_key=True)
-    SNo = db.Column(db.Integer, db.ForeignKey('todo.SNo'), nullable=False)
+    SNo = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(200), nullable=False)
     desc = db.Column(db.String(500), nullable=False)
     planned_date = db.Column(db.Date, nullable=True)
