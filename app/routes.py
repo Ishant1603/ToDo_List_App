@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash,jsonify
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import datetime
 from app import app, db, bcrypt, login_manager
@@ -174,3 +174,15 @@ def Delete(CompleteId):
     db.session.delete(todo)
     db.session.commit()
     return redirect('/completed')
+
+
+
+@app.route('/drop_fk')
+def drop_foreign_key():
+    try:
+        # Run raw SQL to drop the foreign key
+        db.session.execute('ALTER TABLE completed_todos DROP CONSTRAINT completed_todos_SNo_fkey;')
+        db.session.commit()
+        return jsonify({"status": "success", "message": "Foreign key constraint dropped."})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
