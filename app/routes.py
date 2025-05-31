@@ -3,7 +3,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from datetime import datetime
 from app import app, db, bcrypt, login_manager
 from app.models import User, Todo, CompletedTodo
-from sqlalchemy import or_
+from sqlalchemy import or_,text
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -177,11 +177,15 @@ def Delete(CompleteId):
 
 
 
+from flask import jsonify
+from sqlalchemy import text
+from app import db
+
 @app.route('/drop_fk')
 def drop_foreign_key():
     try:
-        # Run raw SQL to drop the foreign key
-        db.session.execute('ALTER TABLE completed_todos DROP CONSTRAINT completed_todos_SNo_fkey;')
+        # Wrap SQL in text()
+        db.session.execute(text('ALTER TABLE completed_todos DROP CONSTRAINT completed_todos_SNo_fkey;'))
         db.session.commit()
         return jsonify({"status": "success", "message": "Foreign key constraint dropped."})
     except Exception as e:
