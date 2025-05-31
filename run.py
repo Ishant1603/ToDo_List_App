@@ -21,6 +21,7 @@ def email_notification_worker():
                     planned_dt = india_tz.localize(datetime.combine(todo.planned_date, todo.planned_time))
                     reminder_dt = planned_dt - timedelta(minutes=5)
                     delta = (reminder_dt - now).total_seconds()
+                    print(f"[INFO] Current Time Left : {delta}")
                     if 0 <= delta <= 60:
                         user = User.query.filter_by(id=todo.user_id).first()
                         if user:
