@@ -177,16 +177,26 @@ def Delete(CompleteId):
 
 
 
-from flask import jsonify
-from sqlalchemy import text
-from app import db
-
-@app.route('/drop_fk')
-def drop_foreign_key():
+@app.route('/list_fks')
+def list_foreign_keys():
     try:
-        # Wrap SQL in text()
-        db.session.execute(text('ALTER TABLE completed_todos DROP CONSTRAINT completed_todos_SNo_fkey;'))
-        db.session.commit()
-        return jsonify({"status": "success", "message": "Foreign key constraint dropped."})
+        result = db.session.execute(text("""
+            SELECT
+                tc.constraint_name,
+                tc.table_name,
+                kcu.column_name,
+                ccu.table_name AS foreign_table_name,
+                ccu.column_name AS foreign_column_name 
+            FROM 
+                information_schema.table_constraints AS tc 
+                JOIN information_schema.key_column_usage AS kcu
+                  ON tc.constraint_name = kcu.constraint_name
+                JOIN information_schema.constraint_column_usage AS ccu
+                  ON ccu.constraint_name = tc.constraint_name
+            WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name='completed_todos';
+        """))
+
+        constraints = [dict(row) for row in result]
+        return jsonify(constraints)
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
